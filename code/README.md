@@ -6,7 +6,7 @@ additional config.py file require which contains all the following information <
 PRAW : https://praw.readthedocs.io/en/stable/tutorials/comments.html
 <br />
 <br />
-Dataset for this project is from <br />
+Dataset for this project is from https://github.com/hadarishav/Ruddit <br />
 ```bash
 @inproceedings{hada-etal-2021-ruddit,
     title = "Ruddit: {N}orms of Offensiveness for {E}nglish {R}eddit Comments",
