@@ -8,6 +8,8 @@
 \usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{multicol}
+\usepackage{listings}
+
 
 \setlength{\columnsep}{1cm}
 \usepackage[backend=bibtex,
@@ -213,16 +215,7 @@ Since rating offensive language with numerical values is somewhat subjective, te
 However, this type of test can be carried out with some users. 
 
 \subsection{Project Plan}
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{1.0\linewidth}
-    \includegraphics[width=\linewidth]{./gantt.png}
-    \caption{Gantt Chart}
-  \end{subfigure}
-  \label{ganttChart}
-\end{figure}
-
-Project planning is a crucial criterion for a successful project. Detail plan for this project is gathered on one Gantt chart below.
+Project planning is a crucial criterion for a successful project. Detail plan for this project is gathered on one Gantt chart below ((a) Gantt Chart on Figures section).
 The plan is set weekly, and the week count is the same as the UoL module scheduling system.
 It starts from Week 9, the following week of peer graded assignment submission for project design.
 There are some extra weeks of work plan in important parts of this project.
@@ -237,14 +230,87 @@ Putting some insurance in planning ensures that the project will be completed on
 \\
 
 \section{Implemementation}
+\subsection{Overviwe}
+The main objective of this project is to develop an offensive language detection deep learning model with the genetic algorithm.
+The model aims to classify offensive languages between the scale of -1 (not offensive) and 1 (very offensive).
+In addition, the genetic algorithm will be used to improve the model automatically.
+By the date of this report, implementations are focused on developing the base model.
+
+\subsection{Dataset}
+Dataset for this project was obtained from Ruddit research paper ~\cite{hada2021ruddit}.
+The dataset is available on the GitHub page of the paper.
+However, the dataset only contains the id of each comment.
+Therefore, each comment has to retrieve using Reddit API.
+This process only requires a couple of lines of Python script ((d) on the figures section).
+
+This Python code iterates through each row of the original dataset and converts comment id into actual comment using Reddit API.
+Some comments no longer exist on Reddit, which are removed from the dataset.
+
+
+\subsection{Model}
+The main components of the initial prototype of the model are convolutional layers and a pre-trained GloVe word vector. From the performance of the prototype, convolutional layers show some promise performance.
+Models from the Ruddit research paper ~\cite{hada2021ruddit} were considered in the first implementation. Although the Ruddit paper uses the PyTorch library, this project uses the TensorFlow library.
+Bert and HateBert models perform well on the Ruddit research; however, there is a downside.
+The size of both models are enormous, and there is no access to the hardware that can handle those model with a decent time. For that reason, a different mode was considered, the BiLSTM model.
+This model is one of the models that the Reddit paper used. There are two different implementations at this date.
+Both with the same model but different tokenizers.
+One with BERT tokenizer ~\cite{devlin2018bert} and another with HateBERT ~\cite{caselli2020hatebert} tokenizer.
+These two implementations have somewhat experimental elements.
+Models are implemented based on how it is implemented on Reddit but slightly different.
+The model is a combination of Convolutional layers and BiLSTM layers.
+This combination had a better result than a model with just BiLSTM layers.
+Please refer to the (b) on the figures section.
+
 
 \section{Evalutation}
+Evaluation is carried out with Mean Square Error, which is also used for the loss function on model training.
+Also, accuracy is calculated in part of the evaluation.
+Since the model is trained to classify each comment with a value, it classifies the result as accurate if the absolute difference between actual and predicted values is within a specific range. Finally, detailed results are shown in the table. Please refer to the (c) Result of model prediction on the figure section velow.
+
+Overall, MSE is not low as the model from Reddit.
+Accuracy is pretty high with 0.3 differences.
+However, there is plenty of room to improve the model, and the genetic algorithm should be a helpful tool. By implementations so far, the base model is constructed but still needs improvement.
+Also, more efficient evaluations, including unit testing, are necessary for further development.
+
 
 \section{Conclusion}
+The usage of offensive and inappropriate language is a significant problem that everyone needs to consider on the modern internet, especially where people can use their own words.
+The development of this project up to this date suggests that the deep learning model can be developed and used to evaluate the offensiveness of English sentences.
+However, it is a challenging task, and different considerations need to be taken.
+
+There is still much room for improvement and development required in this project.
+Also, different approaches need to take place, including developing own tokenizers and developing the model using the genetic algorithms.
+Then, more experimental elements can take this project with more successful results.
 
 \newpage
 \printbibliography
 \end{multicols}
 \newpage
 \section{Figures}
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.7\linewidth}
+    \caption{Gantt Chart}
+    \includegraphics[width=\linewidth]{./gantt.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{BiLSTM model with Conv1D}
+  \includegraphics[width=0.5\textwidth]{./model.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Result of model prediction}
+  \includegraphics[width=0.5\textwidth]{./table1.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Code to convert comment ID to comment}
+  \includegraphics[width=0.5\textwidth]{./code.png}
+  \end{subfigure}
+
+\end{figure}
 \end{document}
