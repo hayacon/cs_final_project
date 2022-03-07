@@ -1,6 +1,7 @@
 import unittest
 import data_analysis_functions as da
-import pandas as pd
+import pandas as pd #🐼
+import os
 
 class TestDataAnalysis(unittest.TestCase):
 
@@ -9,6 +10,8 @@ class TestDataAnalysis(unittest.TestCase):
         self.df = None
 
     def test_importData(self):
+        name, extention = os.path.splitext(self.csv_file)
+        self.assertEqual(extention, '.csv')
         self.assertIsNotNone(da.importData(self.csv_file))
 
     def test_importData_returnType(self):
@@ -51,6 +54,21 @@ class TestDataAnalysis(unittest.TestCase):
         dist_df = da.dataDistribution(df)
         col_name = dist_df.columns
         self.assertEqual(list(col_name), ['-1 ~ -0.75', '-0.75 ~ -0.5', '-0.5 ~ -0.25', '-0.25 ~ 0', '0 ~ 0.25','0.25 ~ 0.5', '0.5 ~ 0.75', '0.75 ~ 1'])
+
+    def test_cleanText(self):
+        self.assertIsNotNone(da.cleanText('hi'))
+
+    def test_cleanText_returnType(self):
+        text = "I'm currently studying my BSc degree in https://www.coursera.org/ provided by @UoL"
+        clean_text = da.cleanText(text)
+        self.assertTrue(isinstance(clean_text, list))
+
+    def test_cleanText_returnString(self):
+        text = "I'm currently studying my BSc degree in https://www.coursera.org/ provided by @UoL"
+        expect = ['currently', 'studying', 'bsc', 'degree', 'provided', 'uol']
+        result = da.cleanText(text)
+        self.assertEqual(result, expect)
+
 
 if __name__ == '__main__':
     unittest.main()
