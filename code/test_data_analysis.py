@@ -7,51 +7,49 @@ class TestDataAnalysis(unittest.TestCase):
 
     def setUp(self):
         self.csv_file = "./data/reddit_dataset.csv"
-        self.df = None
+        self.df = da.importData(self.csv_file)
 
     def test_importData(self):
         name, extention = os.path.splitext(self.csv_file)
         self.assertEqual(extention, '.csv')
-        self.assertIsNotNone(da.importData(self.csv_file))
 
     def test_importData_returnType(self):
         expect = pd.core.frame.DataFrame
         result = type(da.importData(self.csv_file))
         self.assertEqual(result, expect)
 
+    def test_importData_col(self):
+        expect = ['id', 'comment', 'score']
+        cols = self.df.columns
+        self.assertEqual(list(cols), expect)
+
     def test_cleanDf(self):
-        df = da.importData(self.csv_file)
-        self.assertIsNotNone(da.cleanDf(df))
+        self.assertIsNotNone(da.cleanDf(self.df))
 
     def test_cleandDf_returnType(self):
-        df = da.importData(self.csv_file)
         expect = pd.core.frame.DataFrame
-        result = type(da.cleanDf(df))
+        result = type(da.cleanDf(self.df))
         self.assertEqual(result, expect)
 
     def test_cleanDf_returnData(self):
-        df = da.importData(self.csv_file)
-        result_df = da.cleanDf(df)
+        result_df = da.cleanDf(self.df)
         result = True
-        for index, row in df.iterrows():
+        for index, row in self.df.iterrows():
             if row['comment'] == '[removed]' or row['comment'] == '[deleted]' or row['comment'] == 'this comment is no longer availble':
                 result = False
                 break
         self.assertTrue(result)
 
     def test_dataDistribution(self):
-        df = da.importData(self.csv_file)
-        self.assertIsNotNone(da.dataDistribution(df))
+        self.assertIsNotNone(da.dataDistribution(self.df))
 
     def test_dataDistribution_returnType(self):
-        df = da.importData(self.csv_file)
         expect = pd.core.frame.DataFrame
-        result = type(da.dataDistribution(df))
+        result = type(da.dataDistribution(self.df))
         self.assertEqual(result, expect)
 
     def test_dataDistribution_returnDf(self):
-        df = da.importData(self.csv_file)
-        dist_df = da.dataDistribution(df)
+        dist_df = da.dataDistribution(self.df)
         col_name = dist_df.columns
         self.assertEqual(list(col_name), ['-1 ~ -0.75', '-0.75 ~ -0.5', '-0.5 ~ -0.25', '-0.25 ~ 0', '0 ~ 0.25','0.25 ~ 0.5', '0.5 ~ 0.75', '0.75 ~ 1'])
 
@@ -69,6 +67,53 @@ class TestDataAnalysis(unittest.TestCase):
         result = da.cleanText(text)
         self.assertEqual(result, expect)
 
+    def test_flatten(self):
+        self.assertIsNotNone(da.flatten(self.df, 'comment'))
+
+    def test_flatten_returnType(self):
+        result = da.flatten(self.df, 'comment')
+        self.assertTrue(isinstance(result, list))
+
+    def test_textConvert(self):
+        self.assertIsNotNone(da.textConvert(self.df, 'comment', 'cleaned_comment'))
+
+    def test_textConvert_dfCol(self):
+        result_df = da.textConvert(self.df, 'comment', 'cleaned_comment')
+        columns = result_df.columns
+        self.assertEqual(list(columns), ['id', 'comment', 'cleaned_comment', 'score'])
+
+    def test_textConvert_dfColNotDefalut(self):
+        result_df = da.textConvert(self.df, 'comment', 'cleaned_comment')
+        self.assertNotEqual(result_df['cleaned_comment'][0], 'abc')
+
+    def test_lexical_diversity(self):
+        text = ['currently', 'studying', 'bsc', 'degree', 'provided', 'uol']
+        self.assertIsNotNone(da.lexical_diversity(text))
+
+    def test_lexical_diversity(self):
+        text = ['currently', 'studying', 'bsc', 'degree', 'provided', 'uol']
+        vocab, lex = da.lexical_diversity(text)
+        self.assertEqual(vocab, 6)
+        self.assertEqual(lex, 1)
+
+    def test_plot_lexical_diversity(self):
+        self.assertIsNotNone(da.plot_lexical_diversity([0, 1], [0, 1]))
+
+    def test_plot_lexical_diversity_returnTypr(self):
+        expect = pd.core.frame.DataFrame
+        result = type(da.plot_lexical_diversity([0, 1],[0, 1]))
+        self.assertEqual(result, expect)
+
+    def test_frequentDistribution(self):
+        self.assertIsNotNone(da.frequentDistribution('hi'))
+
+    def test_frequentDistribution_result(self):
+        text = ['Apple', 'Apple', 'MicroSoft', 'Amazon', 'Apple', 'Amazon', 'Google', 'Amazon', 'Apple', 'Google']
+        expect = [('Apple', 4), ('Amazon',3), ('Google',2), ('MicroSoft',1)]
+        self.assertEqual(expect, da.frequentDistribution(text))
+
+    def test_plot_wordCloud(self):
+        self.assertIsNotNone(da.plot_wordCloud('hi'))
 
 if __name__ == '__main__':
     unittest.main()

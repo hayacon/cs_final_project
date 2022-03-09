@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import re
 import string
 
-#Naturl Language Toollit
+#Natul Language Toollit
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
@@ -29,12 +29,14 @@ def importData(file):
     file : csv file
     """
     try:
-        df = pd.read_csv(file)
+        df = pd.read_csv(file, index_col=None)
     except IOError as e:
         if e.errno == errno.EACCES:
             print("file exists, but isn't readable")
         elif e.errno == errno.ENOENT:
             print("files isn't readable because it isn't there")
+
+    df.drop(columns='Unnamed: 0', inplace=True)
     return df
 
 def cleanDf(df):
@@ -45,7 +47,8 @@ def cleanDf(df):
     for index, row in df.iterrows():
         if row['comment'] == '[removed]' or row['comment'] == '[deleted]' or row['comment'] == 'this comment is no longer availble':
             df.drop(index, axis=0, inplace=True)
-
+    df = df.reset_index()
+    df = df.drop(columns='index')
     return df
 
 def dataDistribution(df):
@@ -126,12 +129,59 @@ def cleanText(text_data):
 
     return text
 
-def flatten(df):
+def flatten(df, col):
     """
     helper function to convert a cleaned_text column into a single list
     df : dataframe
     """
-    t = df['cleaned_text'].tolist()
+    t = df[col].tolist()
     return [item for sublist in t for item in sublist]
 
-    
+def textConvert(df, col, new_col):
+    '''
+    Clean original text and store it in a new column
+    df : pandas DataFrame
+    col : column contain original text
+    new_col : new column to contain cleaned text
+    '''
+    df.insert(2, new_col, 'abc')
+    for index, row in df.iterrows():
+        df.iat[index, 2] = cleanText(row[col])
+    return df
+
+def lexical_diversity(text):
+    '''
+    Function to calculate a number of vocab and lexical diversity
+    text : a list of words
+    '''
+    vocab = len(set(text))
+    lex = vocab/len(text)
+    return vocab, lex
+
+def plot_lexical_diversity(vocab, lex, index):
+    '''
+    Function to plot a table of vacaburary and lexical diversity of text data
+    vocab : array of numerical data (size of vocaburay)
+    lex : array of lexical diversity of several data
+    '''
+    if len(vocab) != len(lex):
+        print("!size of vaoburay and lexical diversity must be equal!")
+        return None
+
+    d = {'Vocaburaly':vocab, 'Lexical Diversity':lex}
+    df = pd.DataFrame(data=d, index=index)
+    return df
+
+def frequentDistribution(text):
+    return FreqDist(text)
+
+def plot_wordCloud(text):
+    """
+    helper function to plot word cloud
+    text : a list of words
+    """
+    word_cloud = WordCloud(collocations = False, background_color = 'white').generate(str(text))
+    plt.imshow(word_cloud, interpolation='bilinear')
+    plt.axis("off")
+    plt.show()
+    return plt
