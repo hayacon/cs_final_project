@@ -30,13 +30,13 @@ def importData(file):
     """
     try:
         df = pd.read_csv(file, index_col=None)
+        df.drop(columns='Unnamed: 0', inplace=True)
     except IOError as e:
         if e.errno == errno.EACCES:
             print("file exists, but isn't readable")
         elif e.errno == errno.ENOENT:
             print("files isn't readable because it isn't there")
-
-    df.drop(columns='Unnamed: 0', inplace=True)
+            
     return df
 
 def cleanDf(df):
