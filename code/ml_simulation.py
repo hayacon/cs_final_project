@@ -78,5 +78,4 @@ class ML_simulation:
         result = self.model.evaluate(np.stack(test_data, 0), test_target)
 
         print(result)
-
         return result
