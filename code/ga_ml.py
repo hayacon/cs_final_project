@@ -13,7 +13,7 @@ class GA_ML:
         gene[0] = random.randint(0, 4)
         if gene[0] == 0:
             gene[1] = random.randint(1, 10)
-            gene[2] = random.randint(1, 300)
+            gene[2] = random.randint(1, 20)
         elif gene[0] == 1:
             gene[2] = 0
             gene[1] = random.randint(2, 300)
@@ -23,17 +23,30 @@ class GA_ML:
         elif gene[0] == 3:
             gene[2] = 0
             gene[1] = random.randint(2, 300)
-        elif gene[0] == 4:
-            gene[2] = 0
-            gene[1] = round(random.uniform(0, 1), 1)
+        # elif gene[0] == 4:
+        #     gene[2] = 0
+        #     gene[1] = round(random.uniform(0, 1), 1)
 
         return gene
 
     @staticmethod
+    def random_model(num_layer):
+        model = []
+        for i in range(num_layer):
+            model.append(GA_ML.get_random_layer())
+        return model
+
+
+    @staticmethod
+    # needs to be fixes, when two list with different size are
     def crossover(g1, g2):
         x1 = random.randint(0, len(g1)-1)
         x2 = random.randint(0, len(g2)-1)
-        g3 = np.concatenate((g1[x1:], g2[x2:]))
+        if x1 < x2:
+            g3 = np.concatenate((g1[x1:], g2[x2:]))
+        else:
+            g3 = np.concatenate((g2[x2:], g1[x1:]))
+
         if len(g3) > len(g1):
             g3 = g3[0:len(g1)]
         return g3
@@ -70,12 +83,25 @@ class GA_ML:
     def grow_mutate(genome, rate):
         if random.random() < rate:
             gene = GA_ML.get_random_layer()
-            print(gene)
-            new_genome = copy.copy(genome)
-            print(new_genome)
-            new_genome.append(gene)
-            print(new_genome)
-            return new_genome
+            if type(gene) is list:
+                new_genome = copy.copy(genome)
+                if type(new_genome) is list:
+                    new_genome.append(gene)
+                    return new_genome
+                else:
+                    new_genome.tolist()
+                    new_genome.append(gene)
+                    return new_genome
+            else:
+                gene.tolist()
+                new_genome = copy.copy(genome)
+                if type(new_genome) is list:
+                    new_genome.append(gene)
+                    return new_genome
+                else:
+                    new_genome.tolist()
+                    new_genome.append(gene)
+                    return new_genome
         else:
             return genome
 
@@ -88,6 +114,10 @@ class GA_ML:
         minValue = new_fits[0]
         secondMinValue = new_fits[1]
         return minValue, secondMinValue
+
+    @staticmethod
+    def convert_toint(list):
+        return list
 
     @staticmethod
     def selectParent(fits):

@@ -12,6 +12,7 @@ class ML_Model:
         model = keras.Sequential()
         model.add(keras.Input(shape=(300,)))
         model.add(keras.layers.Embedding(30523, 256))
+        model.add(keras.layers.Conv1D(filters = 20, kernel_size = 3))
         for gen in self.gene:
             if gen[0] == 0:
                 model.add(keras.layers.Conv1D(filters = gen[2], kernel_size = gen[1]))
@@ -22,8 +23,8 @@ class ML_Model:
             elif gen[0] == 3:
                 model.add(keras.layers.Bidirectional(tf.keras.layers.LSTM(gen[1], return_sequences=True), input_shape=(5, 10)))
                 model.add(keras.layers.Bidirectional(tf.keras.layers.LSTM(gen[1])))
-            elif gen[0] == 4:
-                model.add(keras.layers.Dropout(gen[1]))
+            # elif gen[0] == 4:
+            #     model.add(keras.layers.Dropout(gen[1]))
         model.add(keras.layers.Dense(1, activation='tanh'))
         model.compile(loss='mse', optimizer = tf.keras.optimizers.Adam(learning_rate=0.001))
         return model
@@ -71,11 +72,14 @@ class ML_simulation:
             train_data[i] = np.array(train_data[i]).astype(np.float32)
             train_data[i] = train_data[i].flatten()
 
-        print(self.model.summary())
 
         self.model.fit(np.stack(train_data, 0), train_target, epochs = 7)
         # score = self.model.predict(np.stack(test_data, 0)).flatten()
         result = self.model.evaluate(np.stack(test_data, 0), test_target)
 
         print(result)
+        if result < 0.05:
+            print('possilbe good model')
+            print(self.model.summary())
+
         return result
