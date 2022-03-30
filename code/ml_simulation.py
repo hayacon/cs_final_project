@@ -12,7 +12,7 @@ class ML_Model:
         model = keras.Sequential()
         model.add(keras.Input(shape=(300,)))
         model.add(keras.layers.Embedding(30523, 256))
-        model.add(keras.layers.Conv1D(filters = 20, kernel_size = 3))
+        model.add(keras.layers.Conv1D(filters = 150, kernel_size = 2))
         for gen in self.gene:
             if gen[0] == 0:
                 model.add(keras.layers.Conv1D(filters = gen[2], kernel_size = gen[1]))
@@ -23,8 +23,6 @@ class ML_Model:
             elif gen[0] == 3:
                 model.add(keras.layers.Bidirectional(tf.keras.layers.LSTM(gen[1], return_sequences=True), input_shape=(5, 10)))
                 model.add(keras.layers.Bidirectional(tf.keras.layers.LSTM(gen[1])))
-            # elif gen[0] == 4:
-            #     model.add(keras.layers.Dropout(gen[1]))
         model.add(keras.layers.Dense(1, activation='tanh'))
         model.compile(loss='mse', optimizer = tf.keras.optimizers.Adam(learning_rate=0.001))
         return model
@@ -78,8 +76,9 @@ class ML_simulation:
         result = self.model.evaluate(np.stack(test_data, 0), test_target)
 
         print(result)
-        if result < 0.05:
+        if result < 0.045:
             print('possilbe good model')
             print(self.model.summary())
 
+        keras.backend.clear_session()
         return result
