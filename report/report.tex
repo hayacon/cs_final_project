@@ -44,9 +44,9 @@ Many comments are being exchanged on a wide range of topics within social medi
 Some of the contents may include offensive or hateful language, and exposure to those contents can affect users’ mental health well-being ~\cite{hada2021ruddit}.
 
 In recent years, there has been increasing attention towards violence on social media platforms in the general public.
-In Japan, young TV star suicide was caused by offensive and violent comments targeting a specific person ~\cite{HanaK}.
+For instance, in Japan, young TV star suicide was caused by offensive and violent comments targeting a specific person ~\cite{HanaK}.
 Following that incident, there was lots of focus on online insulting with offensive or abusive language. The Japanese government considers stricter law enforcement against those insulting on social media platforms ~\cite{JpGov}.
-COVID-19 pandemic was declared by WHO in March of 2020 ~\cite{whoCovid}.
+In March of 2020, COVID-19 pandemic was declared by WHO ~\cite{whoCovid}.
 Since then, many countries have placed various major restrictions to fight this disease, including social distancing and lockdowns. Social media plays a vital role in connecting people during that time. Although it brought lots of benefits to our society, there is also a dark side ~\cite{liu2021covid}.
 A study ~\cite{babvey2021using} shows an increase in abusive content or comments on Twitter and Reddit in several countries, specifically countries with strong restrictions.
 
@@ -214,6 +214,16 @@ To evaluate this project, the result will be compared with other related works.
 Since rating offensive language with numerical values is somewhat subjective, testing will require a third party to see the result.
 However, this type of test can be carried out with some users. 
 
+\subsection{Evaluation}
+The aim of this project is to predict an offensive score of each comments.
+Since output of prediction will be numerical value, simple evaluation method for general machine learning problem cannot be apply.
+In training process, a model is constantly evaluate with MSE (mean square error) loss function.
+
+After training is complete, a model will evaluate with MSE.
+Then, I will carry out evaluation with confusion matrix adjusted to this specific project, and also evaluation by calculating accuracy of the model’s prediction.
+In addition to those evaluations, a model will also compare with baseline model, and models from a Ruddit research paper ~\cite{hada2021ruddit}.
+
+
 \subsection{Project Plan}
 Project planning is a crucial criterion for a successful project. Detail plan for this project is gathered on one Gantt chart below ((a) Gantt Chart on Figures section).
 The plan is set weekly, and the week count is the same as the UoL module scheduling system.
@@ -225,16 +235,17 @@ For a write up task, additional draft is included to make sure its quality is hi
 Also, for that purpose, the last 2 weeks of the project is dedicate for write up only.
 Also, those extra weeks are for cases where thighs did not go as planned.
 Putting some insurance in planning ensures that the project will be completed on time. \\
-\\
-\\
-\\
 
 \section{Implemementation}
 \subsection{Overviwe}
-The main objective of this project is to develop an offensive language detection deep learning model with the genetic algorithm.
-The model aims to classify offensive languages between the scale of -1 (not offensive) and 1 (very offensive).
+The main objective of this project is to develop an offensive language detection deep learning model with a genetic algorithm.
+The model aims to classify offensive languages on the scale of -1 (not offensive) and 1 (very offensive).
 In addition, the genetic algorithm will be used to improve the model automatically.
-By the date of this report, implementations are focused on developing the base model.
+The first implementation cycle focused on developing a baseline model.
+Then in further cycles, it was focused on developing a genetic algorithm and running a genetic algorithm to develop a well-performing machine learning model.
+The project is developed with Python and various tools.
+For machine learning and deep learning, I used TensorFlow and Keras.
+In addition to those two, the transformer library by Hugging face is used to import its hateBERT tokenizer.
 
 \subsection{Dataset}
 Dataset for this project was obtained from Ruddit research paper ~\cite{hada2021ruddit}.
@@ -246,8 +257,37 @@ This process only requires a couple of lines of Python script ((d) on the figure
 This Python code iterates through each row of the original dataset and converts comment id into actual comment using Reddit API.
 Some comments no longer exist on Reddit, which are removed from the dataset.
 
+\subsection{Data analysis}
+Before using a dataset in the project, I conducted some data analysis to understand an overview of this dataset.
+Data analysis includes score distribution, frequency distribution, and lexical diversity.
+Figure xx shows some examples from the dataset.
 
-\subsection{Model}
+\subsubsection{Data distribution}
+In this data set, data are not equally distributed.
+Each comment is classified into 8 different score ranges; each range is 0.25. Most data sit on a range of between -0.5 and 0.25.
+Figure xx shows a detailed distribution of data.
+
+\subsubsection{Frequency distribution}
+Frequency distribution analysis are carried over whole dataset, offensive comments (0.5 ~ 1.0), neutral comments (-0.5 ~ 0.5), and non offensive comments (-1.0 ~ -0.5).
+The first finding was that the word “nt” carries a unique meaning within the community of Reddit users.
+This word ranked high in all categories.
+In each category, frequent words are aligned with general expectations.
+For instance, offensive comments are likely to contain swear words.
+On the other hand, non-offensive comments are likely to contain positive words.
+Figure xx displays the frequency distribution of each category in a word cloud.
+
+\subsubsection{Lexical diversity}
+The result of lexical diversity shows that non-offensive comments have the greatest lexical diversity and offensive comments have the next greatest lexical diversity.
+Overall, the lexical diversity of the whole data set is not too high.
+Figure xx shows detailed results, including a number of vocabulary.
+
+\subsection{Test}
+The development of this project is mainly based on test-driven development.
+Using the right data type and structure is very important with machine learning.
+A unit test can ensure that the right data type and structures are used in each process.
+Also, a unit test clearly points out if there are any errors as development goes on.
+
+\subsection{Baseline model}
 The main components of the initial prototype of the model are convolutional layers and a pre-trained GloVe word vector. From the performance of the prototype, convolutional layers show some promise performance.
 Models from the Ruddit research paper ~\cite{hada2021ruddit} were considered in the first implementation. Although the Ruddit paper uses the PyTorch library, this project uses the TensorFlow library.
 Bert and HateBert models perform well on the Ruddit research; however, there is a downside.
@@ -260,6 +300,33 @@ Models are implemented based on how it is implemented on Reddit but slightly dif
 The model is a combination of Convolutional layers and BiLSTM layers.
 This combination had a better result than a model with just BiLSTM layers.
 Please refer to the (b) on the figures section.
+
+\subsection{Genetic algorithm}
+I attempt to develop a machine learning model using a genetic algorithm in this part of the project.
+Hyperplane sampling is one of a genetic algorithm's characteristics, which can help improve a machine learning model over iterations.
+
+A genetic algorithm consists of two main processes: selection and breeding.
+Keras models are embedded encoded into a list of integers.
+Genotype list consists of several lists containing three integers.
+The first integer represents a layer type, and the second integer represents a parameter of that layer.
+The third integer only represents another parameter for the convolutional layer.
+For other layers, it is set to 0.
+The selection process consists of converting a genotype into a Keras sequential model then training g process.
+Fitness function is an evaluation process within a Keras.
+Specifically, in this project, it is Mean Square Error.
+Inbreeding process, two parents are selected by roulette selection.
+Each model gets weight based on its performance.
+Then, two parents are bred to produce a new Keras model.
+Crossover is a breeding method, and there are several mutations, including point mutation, shrink mutation and grow mutation.
+The breeding process is repeated until there is a certain population.
+
+One of the critical things is that the randomly generated Keras model is not necessarily valid.
+There are lots of invalid models in the first iteration of the genetic algorithm.
+It often ended up with invalid models going through genetic algorithms. On the other hand, several cases of randomly generated models performed well.
+After the first iteration, a set of models with somewhat high performance start a genetic algorithm.
+However, there are still a few invalid models.
+Error handling is necessary for the genetic algorithms to work with those invalid models.
+A high-performance model such as the mean square euro being less than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
 
 
 \section{Evalutation}
@@ -294,23 +361,23 @@ Then, more experimental elements can take this project with more successful resu
     \includegraphics[width=\linewidth]{./gantt.png}
   \end{subfigure}
 
-  \begin{subfigure}[b]{1.0\linewidth}
-  \centering
-  \caption{BiLSTM model with Conv1D}
-  \includegraphics[width=0.5\textwidth]{./model.png}
-  \end{subfigure}
-
-  \begin{subfigure}[b]{1.0\linewidth}
-  \centering
-  \caption{Result of model prediction}
-  \includegraphics[width=0.5\textwidth]{./table1.png}
-  \end{subfigure}
-
-  \begin{subfigure}[b]{1.0\linewidth}
-  \centering
-  \caption{Code to convert comment ID to comment}
-  \includegraphics[width=0.5\textwidth]{./code.png}
-  \end{subfigure}
+  % \begin{subfigure}[b]{1.0\linewidth}
+  % \centering
+  % \caption{BiLSTM model with Conv1D}
+  % \includegraphics[width=0.5\textwidth]{./model.png}
+  % \end{subfigure}
+  %
+  % \begin{subfigure}[b]{1.0\linewidth}
+  % \centering
+  % \caption{Result of model prediction}
+  % \includegraphics[width=0.5\textwidth]{./table1.png}
+  % \end{subfigure}
+  %
+  % \begin{subfigure}[b]{1.0\linewidth}
+  % \centering
+  % \caption{Code to convert comment ID to comment}
+  % \includegraphics[width=0.5\textwidth]{./code.png}
+  % \end{subfigure}
 
 \end{figure}
 \end{document}
