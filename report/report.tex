@@ -22,6 +22,7 @@
 
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{hyperref}
 
 \setlength\parindent{2em}
 \setlength\parskip{0em}
@@ -36,8 +37,8 @@
 \begin{document}
 
 \maketitle
-
-\begin{multicols}{2}
+Link to GitHub repository of this project : \url{https://github.com/hayacon/cs_final_project}
+% \begin{multicols}{2}
 \section{Introduction}
 These days, many human-to-human interactions are taking place on online platforms, mainly in social media.
 Many comments are being exchanged on a wide range of topics within social media, but those are not necessary all using appropriate languages ~\cite{hada2021ruddit}.
@@ -217,7 +218,7 @@ However, this type of test can be carried out with some users. 
 \subsection{Evaluation}
 The aim of this project is to predict an offensive score of each comments.
 Since output of prediction will be numerical value, simple evaluation method for general machine learning problem cannot be apply.
-In training process, a model is constantly evaluate with MSE (mean square error) loss function.
+In training process, a model is constantly evaluate with MSE (mean squared error) loss function.
 
 After training is complete, a model will evaluate with MSE.
 Then, I will carry out evaluation with confusion matrix adjusted to this specific project, and also evaluation by calculating accuracy of the model’s prediction.
@@ -313,7 +314,7 @@ The third integer only represents another parameter for the convolutional layer.
 For other layers, it is set to 0.
 The selection process consists of converting a genotype into a Keras sequential model then training g process.
 Fitness function is an evaluation process within a Keras.
-Specifically, in this project, it is Mean Square Error.
+Specifically, in this project, it is mean squared error.
 Inbreeding process, two parents are selected by roulette selection.
 Each model gets weight based on its performance.
 Then, two parents are bred to produce a new Keras model.
@@ -326,19 +327,39 @@ It often ended up with invalid models going through genetic algorithms. On the o
 After the first iteration, a set of models with somewhat high performance start a genetic algorithm.
 However, there are still a few invalid models.
 Error handling is necessary for the genetic algorithms to work with those invalid models.
-A high-performance model such as the mean square euro being less than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
+A high-performance model such as the mean squared euro being less than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
 
 
 \section{Evalutation}
-Evaluation is carried out with Mean Square Error, which is also used for the loss function on model training.
-Also, accuracy is calculated in part of the evaluation.
-Since the model is trained to classify each comment with a value, it classifies the result as accurate if the absolute difference between actual and predicted values is within a specific range. Finally, detailed results are shown in the table. Please refer to the (c) Result of model prediction on the figure section velow.
+Evaluations are carried by various testing on data. As it is described on design section of this report, there are different evaluation methods : MSE, accuracy, confusion matrix, and comparison between data. All results are shown on figure section at the end of this paper.
 
-Overall, MSE is not low as the model from Reddit.
-Accuracy is pretty high with 0.3 differences.
-However, there is plenty of room to improve the model, and the genetic algorithm should be a helpful tool. By implementations so far, the base model is constructed but still needs improvement.
-Also, more efficient evaluations, including unit testing, are necessary for further development.
+\subsection{MSE}
+Mean squared error is one of common loss function that is use in training process of machine learning model. It calculates the difference between predicted value by a model and actual value. It gives an idea how well model is predicting a value.
 
+Result shows that models evolved through genetic algorithm and prove MSE value.
+Detail result can be found on figure xx
+
+\subsection{Accuracy}
+In general, model is consider accurate if prediction and actual values are the equal. However, a model in this project is predicting a numerical value and not a specific class. Consider this special situation, accuracy has calculated in two different ways. In one way, predictions are consider as correct if difference between predict and actual value is within 0.1, and in another way difference is 0.2.
+
+Result shows similar values across three models from genetic algorithm. Also, it shows that models evolve through a genetic algorithm improve its accuracy compare to baseline model.
+Detail result can be found on figure xx
+
+\subsection{Confusion matrix}
+Generally confusion matrix is used for class predicting problem. However, it is simple way to evaluate model’s performance in different value range. In this particular problem of this project, offensive scores are group into three classes : non offensive ($ < -0.4$), neutral ($-04 \sim 0.4$), and offensive ($ > 0.4$).
+
+Result of this evaluation shows clear view of where model struggle to predict. Overall, models are performed well with comments in neutral range. It struggle to work with comments in non offensive range.
+Detail result can be found on figure xx
+
+\subsection{Data comparison}
+This evaluation is very simple but it is important aspect for evaluating this project. The main aim of this project is to develop a machine learning model using a genetic algorithm, and its success can be measure by comparing if different models.
+
+By comparing baseline model and model evolved through genetic algorithm, results shows successful improvement. In other words, model successfully evolved through genetic algorithm and improved its performance.
+Detail result can be found on figure xx
+
+\subsection{Overall evaluation}
+Overall, the project successfully develop a machine learning model using genetic algorithm. However, developed models did not archive high performance as state of art models. Mean squared error of the baseline model is 0.042 and a model from a genetic algorithm improved to 0.037. It seems not much difference but considering that the Ruddit research paper developed similar model with mean squared value of 0.035, it is successful.
+By comparing MSE of model from Ruddit [1] and this project, model from Ruddit has better MSE thus better performance. Also, model did not evolved to a level where it can be use in the real world solution. Although it demonstrate that the machine learning model can be developed using a genetic algorithm, it also demonstrate some limitation of this method. In order to run a genetic algorithm it requires lots of computational power and time. So, it lack of efficiency and require lots of time to run. This is biggest limitation comes down to a genetic algorithm. However, improve algorithm possibly develop a state of art level model. 
 
 \section{Conclusion}
 The usage of offensive and inappropriate language is a significant problem that everyone needs to consider on the modern internet, especially where people can use their own words.
@@ -351,7 +372,7 @@ Then, more experimental elements can take this project with more successful resu
 
 \newpage
 \printbibliography
-\end{multicols}
+% \end{multicols}
 \newpage
 \section{Figures}
 \begin{figure}[h!]
