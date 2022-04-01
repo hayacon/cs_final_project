@@ -1,5 +1,5 @@
 \def \coursename  {CM3070 CS Final Project}
-\def \assigntment {Preliminary Report}
+\def \assigntment {Final Project Report}
 \author {Hayato Ishida}
 
 \documentclass[11pt, natbib=false]{article}
@@ -18,7 +18,7 @@
             style=ACM-Reference-Format]{biblatex}
 \addbibresource{refrence.bib}
 \usepackage{geometry}
-\geometry{margin=2cm}
+\geometry{margin=2.5cm}
 
 \usepackage{graphicx}
 \usepackage{subcaption}
@@ -32,12 +32,18 @@
 % \pagestyle{fancyplain}
 % \chead{\assigntment}
 \date{\today}
-\title{Final Project Draft Report}
+\title{%
+  Developing the ML Model With Genetic Algorithm \\
+  \large BSc Computer Science Final Project
+}
+
 
 \begin{document}
 
 \maketitle
 Link to GitHub repository of this project : \url{https://github.com/hayacon/cs_final_project}
+
+The dataset of this project contains a dataset with comments using offensive \\ or abusive language.
 % \begin{multicols}{2}
 \section{Introduction}
 These days, many human-to-human interactions are taking place on online platforms, mainly in social media.
@@ -226,7 +232,8 @@ In addition to those evaluations, a model will also compare with baseline model,
 
 
 \subsection{Project Plan}
-Project planning is a crucial criterion for a successful project. Detail plan for this project is gathered on one Gantt chart below ((a) Gantt Chart on Figures section).
+Project planning is a crucial criterion for a successful project.
+Detail plan for this project is gathered on one Gantt chart below ((a) Gantt Chart on Figures section).
 The plan is set weekly, and the week count is the same as the UoL module scheduling system.
 It starts from Week 9, the following week of peer graded assignment submission for project design.
 There are some extra weeks of work plan in important parts of this project.
@@ -235,15 +242,18 @@ Testing and evaluation are critical part of the project, and project can be impr
 For a write up task, additional draft is included to make sure its quality is high at the final submission.
 Also, for that purpose, the last 2 weeks of the project is dedicate for write up only.
 Also, those extra weeks are for cases where thighs did not go as planned.
-Putting some insurance in planning ensures that the project will be completed on time. \\
+Putting some insurance in planning ensures that the project will be completed on time. 
+
 
 \section{Implemementation}
+Source code is availble on this project's \href{https://github.com/hayacon/cs_final_project}{GitHub repository}
 \subsection{Overviwe}
-The main objective of this project is to develop an offensive language detection deep learning model with a genetic algorithm.
+The main objective of this project is to develop an offensive language detection deep learning model with the genetic algorithm.
 The model aims to classify offensive languages on the scale of -1 (not offensive) and 1 (very offensive).
-In addition, the genetic algorithm will be used to improve the model automatically.
-The first implementation cycle focused on developing a baseline model.
-Then in further cycles, it was focused on developing a genetic algorithm and running a genetic algorithm to develop a well-performing machine learning model.
+In addition, the genetic algorithm will be used to automatically improve the model, which is the main objective of the implementation stage of this project.
+The first implementation cycle is focused on developing a baseline model.
+Then, in further cycles, it focused on developing the genetic algorithm and running it to develop a well-performing machine learning model.
+
 The project is developed with Python and various tools.
 For machine learning and deep learning, I used TensorFlow and Keras.
 In addition to those two, the transformer library by Hugging face is used to import its hateBERT tokenizer.
@@ -253,54 +263,54 @@ Dataset for this project was obtained from Ruddit research paper ~\cite{hada2021
 The dataset is available on the GitHub page of the paper.
 However, the dataset only contains the id of each comment.
 Therefore, each comment has to retrieve using Reddit API.
-This process only requires a couple of lines of Python script ((d) on the figures section).
+This process only requires a couple of lines of Python script ((b) on the figures section).
 
 This Python code iterates through each row of the original dataset and converts comment id into actual comment using Reddit API.
 Some comments no longer exist on Reddit, which are removed from the dataset.
 
 \subsection{Data analysis}
 Before using a dataset in the project, I conducted some data analysis to understand an overview of this dataset.
+It is important to understand various characteristics of the dataset before using it for a machine learning problem.
 Data analysis includes score distribution, frequency distribution, and lexical diversity.
-Figure xx shows some examples from the dataset.
+Figure (c) shows some examples from the dataset.
 
 \subsubsection{Data distribution}
 In this data set, data are not equally distributed.
-Each comment is classified into 8 different score ranges; each range is 0.25. Most data sit on a range of between -0.5 and 0.25.
-Figure xx shows a detailed distribution of data.
+Each comment is classified into 8 different score ranges; each is 0.25.
+Most data sit on a range of between -0.5 and 0.25.
+The result of this analysis found that the data distribution of the dataset is not balanced.
+Therefore, it can be problematic in the machine learning model development process.
+Considering the nature of the data source, it is understandable that lots of comments sit in the neutral range, and fewer comments sit in the offensive range.
+Figure (d) shows a detailed distribution of data.
 
 \subsubsection{Frequency distribution}
 Frequency distribution analysis are carried over whole dataset, offensive comments (0.5 ~ 1.0), neutral comments (-0.5 ~ 0.5), and non offensive comments (-1.0 ~ -0.5).
 The first finding was that the word “nt” carries a unique meaning within the community of Reddit users.
-This word ranked high in all categories.
+This word ranked high in all categories. Figure (e) is the word cloud of the whole dataset.
 In each category, frequent words are aligned with general expectations.
-For instance, offensive comments are likely to contain swear words.
-On the other hand, non-offensive comments are likely to contain positive words.
-Figure xx displays the frequency distribution of each category in a word cloud.
+For instance, offensive comments are likely to contain swear words. The word cloud of offensive comments is shown in figure (f).
+On the other hand, non-offensive comments are likely to contain positive words. Figure (g) is the word cloud for non-offensive comments.
+Figure $ (e) \sim (h)$ displays the frequency distribution of each category in a word cloud.
 
 \subsubsection{Lexical diversity}
 The result of lexical diversity shows that non-offensive comments have the greatest lexical diversity and offensive comments have the next greatest lexical diversity.
 Overall, the lexical diversity of the whole data set is not too high.
-Figure xx shows detailed results, including a number of vocabulary.
+Figure (i) shows detailed results, including a number of vocabulary.
 
 \subsection{Test}
 The development of this project is mainly based on test-driven development.
-Using the right data type and structure is very important with machine learning.
-A unit test can ensure that the right data type and structures are used in each process.
-Also, a unit test clearly points out if there are any errors as development goes on.
+Using the correct data type and structure is very important with machine learning.
+A unit test can ensure that the correct data type and structures are used in each process.
+Also, the unit test points out if there are any errors as development goes on.
 
 \subsection{Baseline model}
-The main components of the initial prototype of the model are convolutional layers and a pre-trained GloVe word vector. From the performance of the prototype, convolutional layers show some promise performance.
-Models from the Ruddit research paper ~\cite{hada2021ruddit} were considered in the first implementation. Although the Ruddit paper uses the PyTorch library, this project uses the TensorFlow library.
-Bert and HateBert models perform well on the Ruddit research; however, there is a downside.
-The size of both models are enormous, and there is no access to the hardware that can handle those model with a decent time. For that reason, a different mode was considered, the BiLSTM model.
-This model is one of the models that the Reddit paper used. There are two different implementations at this date.
-Both with the same model but different tokenizers.
-One with BERT tokenizer ~\cite{devlin2018bert} and another with HateBERT ~\cite{caselli2020hatebert} tokenizer.
-These two implementations have somewhat experimental elements.
-Models are implemented based on how it is implemented on Reddit but slightly different.
-The model is a combination of Convolutional layers and BiLSTM layers.
-This combination had a better result than a model with just BiLSTM layers.
-Please refer to the (b) on the figures section.
+This part of the implementation focused on developing a baseline model.
+This model structure refers to BiLSTM model from Ruddit research paper ~\cite{hada2021ruddit}.
+As the paper suggests, the model uses HateBERT ~\cite{caselli2020hatebert} tokenizer developed by Hugging Face.
+It also has a model, but it is only available in PyTorch, a different Python library for machine learning.
+This model performance is not very high, but considering this project's main objective, the model provides a good starting point.
+It is the combination of convolutional layer and BiLSTM layers.
+Figure (j) is the summary of the baseline model.
 
 \subsection{Genetic algorithm}
 I attempt to develop a machine learning model using a genetic algorithm in this part of the project.
@@ -324,55 +334,108 @@ The breeding process is repeated until there is a certain population.
 One of the critical things is that the randomly generated Keras model is not necessarily valid.
 There are lots of invalid models in the first iteration of the genetic algorithm.
 It often ended up with invalid models going through genetic algorithms. On the other hand, several cases of randomly generated models performed well.
-After the first iteration, a set of models with somewhat high performance start a genetic algorithm.
+After the first iteration, a set of models with somewhat high performance are fed into the genetic algorithm as an initial population.
 However, there are still a few invalid models.
 Error handling is necessary for the genetic algorithms to work with those invalid models.
-A high-performance model such as the mean squared euro being less than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
+A high-performance model with a mean square error of fewer than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
+
+The result of the genetic algorithm was successful.
+Three models archived higher MSE compared to the baseline model.
+The summary of each model is shown in figures (k), (l), and (m).
+Due to the nature of the genetic algorithm, a single iteration does not necessarily return an ideal result.
+For this project, the second run of the genetic algorithm produced models with better performance than the baseline model.
 
 
 \section{Evalutation}
-Evaluations are carried by various testing on data. As it is described on design section of this report, there are different evaluation methods : MSE, accuracy, confusion matrix, and comparison between data. All results are shown on figure section at the end of this paper.
+Evaluations are carried out by various testing on data.
+As described in the design section of this report, there are different evaluation methods: MSE, accuracy, confusion matrix, and comparison between data.
+All results are shown in the figure section at the end of this paper.
 
 \subsection{MSE}
-Mean squared error is one of common loss function that is use in training process of machine learning model. It calculates the difference between predicted value by a model and actual value. It gives an idea how well model is predicting a value.
+Mean squared error is one of the standard loss functions used in the machine learning model's training process.
+It calculates the difference between the predicted value by a model and the actual value.
+It gives an idea of how well the model is predicting a value.
 
-Result shows that models evolved through genetic algorithm and prove MSE value.
-Detail result can be found on figure xx
+The result shows that models evolved through the genetic algorithm and improved MSE value.
+Detail result can be found on figure (n).
 
 \subsection{Accuracy}
-In general, model is consider accurate if prediction and actual values are the equal. However, a model in this project is predicting a numerical value and not a specific class. Consider this special situation, accuracy has calculated in two different ways. In one way, predictions are consider as correct if difference between predict and actual value is within 0.1, and in another way difference is 0.2.
+The model is generally considered accurate if prediction and actual values are equal.
+However, this project's model predicts a numerical value and not a specific class.
+Therefore, accuracy has been calculated in two different ways.
+In one way, predictions are considered correct if the difference between predict and the actual value is within 0.1, and in another way, the difference is 0.2.
 
-Result shows similar values across three models from genetic algorithm. Also, it shows that models evolve through a genetic algorithm improve its accuracy compare to baseline model.
-Detail result can be found on figure xx
+The result shows similar values across three models from the genetic algorithm.
+Also, it shows that models evolve through a genetic algorithm to improve their accuracy compared to the baseline model.
+Detail result can be found on figure (n).
 
 \subsection{Confusion matrix}
-Generally confusion matrix is used for class predicting problem. However, it is simple way to evaluate model’s performance in different value range. In this particular problem of this project, offensive scores are group into three classes : non offensive ($ < -0.4$), neutral ($-04 \sim 0.4$), and offensive ($ > 0.4$).
+Generally, a confusion matrix is used for class predicting problems.
+However, it is a simple way to evaluate the model’s performance in the different value ranges.
+In this particular problem of this project, offensive scores are group into three classes : non offensive ($ > -0.4 $), neutral ($ -04 \sim 0.4 $), and offensive ($ < 0.4 $).
+This evaluation shows a clear view of where the model struggles to predict.
 
-Result of this evaluation shows clear view of where model struggle to predict. Overall, models are performed well with comments in neutral range. It struggle to work with comments in non offensive range.
-Detail result can be found on figure xx
+Overall, models are performed well with comments in the neutral range.
+However, it struggles to work with comments in the non-offensive range.
+This unbalanced result might be caused by the unbalanced dataset that is used in this project.
+The confusion matrix of each model is shown in figure (o), (p), (q), and (r).
 
 \subsection{Data comparison}
-This evaluation is very simple but it is important aspect for evaluating this project. The main aim of this project is to develop a machine learning model using a genetic algorithm, and its success can be measure by comparing if different models.
+This evaluation is very simple, but it is an important aspect of evaluating this project.
+The main aim of this project is to develop a machine learning model using a genetic algorithm, and its success can be measured by comparing different models.
 
-By comparing baseline model and model evolved through genetic algorithm, results shows successful improvement. In other words, model successfully evolved through genetic algorithm and improved its performance.
-Detail result can be found on figure xx
+Comparing the baseline model and the model evolved through genetic algorithm shows successful improvement.
+In other words, the model successfully evolved through a genetic algorithm and improved its performance.
+Detail comparison between models shown in figure (n).
 
 \subsection{Overall evaluation}
-Overall, the project successfully develop a machine learning model using genetic algorithm. However, developed models did not archive high performance as state of art models. Mean squared error of the baseline model is 0.042 and a model from a genetic algorithm improved to 0.037. It seems not much difference but considering that the Ruddit research paper developed similar model with mean squared value of 0.035, it is successful.
-By comparing MSE of model from Ruddit [1] and this project, model from Ruddit has better MSE thus better performance. Also, model did not evolved to a level where it can be use in the real world solution. Although it demonstrate that the machine learning model can be developed using a genetic algorithm, it also demonstrate some limitation of this method. In order to run a genetic algorithm it requires lots of computational power and time. So, it lack of efficiency and require lots of time to run. This is biggest limitation comes down to a genetic algorithm. However, improve algorithm possibly develop a state of art level model. 
+Overall, the project successfully develops a machine learning model using the genetic algorithm.
+However, developed models did not archive high performance as state-of-the-art models would.
+The mean squared error of the baseline model is 0.042, and a model from a genetic algorithm improved to 0.037.
+It seems not much difference but considering that the Ruddit research paper developed a similar model with a mean squared value of 0.035, it is successful.
+By comparing the MSE of the model from Ruddit [1] and this project, the model from Ruddit has better MSE and thus better performance.
+Also, the model did not evolve to a level where it can be used in the real-world solution.
+Although it demonstrates that the machine learning model can be developed using a genetic algorithm, it also demonstrates some limitations of this method.
+Running a genetic algorithm requires lots of computational power and time.
+So, it lacks efficiency and needs lots of time to run.
+This is most significant limitation comes down to a genetic algorithm.
+However, improving the algorithm makes it possible to develop a state of art level model.
 
 \section{Conclusion}
-The usage of offensive and inappropriate language is a significant problem that everyone needs to consider on the modern internet, especially where people can use their own words.
-The development of this project up to this date suggests that the deep learning model can be developed and used to evaluate the offensiveness of English sentences.
-However, it is a challenging task, and different considerations need to be taken.
+Karl Sims first propose the genetic algorithm with evolving virtual creatures ~\cite{sims1994evolving}.
+Since then, there have been many genetic algorithm applications, and developing a machine learning model is one of them.
+In this project, I attempt to develop a machine learning model to predict the offensiveness of English comments using the genetic algorithm.
 
-There is still much room for improvement and development required in this project.
-Also, different approaches need to take place, including developing own tokenizers and developing the model using the genetic algorithms.
-Then, more experimental elements can take this project with more successful results.
+First, I worked on data analysis and pre-processing.
+With data analysis, I explored the data and better understood the data.
+It is important to note that the dataset for this project is unbalanced.
+I applied simple tet cleaning methods in data pre-processing and used a pre-train HateBERT vectorizer.
+At this point, I also prepare a training dataset and a testing dataset.
+
+In the next phase, I developed a baseline model to predict the offensive score on Reddit.
+I refer to Ruddit research paper ~\cite{hada2021ruddit} to develop the baseline model.
+Then I attempted to improve that model using a genetic algorithm.
+As a result, the main aim of this project has been successfully achieved, which is to develop a machine learning model using a genetic algorithm.
+Since a genetic algorithm is a probabilistic search procedure, a single algorithm iteration does not necessarily produce the desired result.
+This project runs the algorithm twice to develop a machine learning model with higher performance than the baseline model.
+All models went through the simulation under the same condition within the genetic algorithm, including the same training and testing dataset.
+
+This project also demonstrates some limitations of using a genetic algorithm to develop or improve a machine learning model.
+The genetic algorithm often requires higher computational power, and this project is no exception.
+However, there is a limitation of computational resources that I had access to, and for this reason, it took a massive amount of time to complete a single iteration.
+The result might be different if more computational resources are available for this project.
+
+Overall, this project produced successful results, but there are many possible improvements.
+First, fixing an unbalanced dataset can develop a better model.
+When considering the amount of time it takes to improve a model and its improvement, this method is not necessarily efficient to improve a machine learning model.
+However, it indeed demonstrates the possibility of the genetic algorithm in machine learning.
+An improved version of the genetic algorithm can develop a better machine learning model than this project.
+Also, at the same time, it suggests that a very complex genetic algorithm might need to develop a state-of-art machine learning model.
+
+
 
 \newpage
 \printbibliography
-% \end{multicols}
 \newpage
 \section{Figures}
 \begin{figure}[h!]
@@ -382,23 +445,134 @@ Then, more experimental elements can take this project with more successful resu
     \includegraphics[width=\linewidth]{./gantt.png}
   \end{subfigure}
 
-  % \begin{subfigure}[b]{1.0\linewidth}
-  % \centering
-  % \caption{BiLSTM model with Conv1D}
-  % \includegraphics[width=0.5\textwidth]{./model.png}
-  % \end{subfigure}
-  %
-  % \begin{subfigure}[b]{1.0\linewidth}
-  % \centering
-  % \caption{Result of model prediction}
-  % \includegraphics[width=0.5\textwidth]{./table1.png}
-  % \end{subfigure}
-  %
-  % \begin{subfigure}[b]{1.0\linewidth}
-  % \centering
-  % \caption{Code to convert comment ID to comment}
-  % \includegraphics[width=0.5\textwidth]{./code.png}
-  % \end{subfigure}
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Python script to import Reddit comments}
+  \includegraphics[width=0.5\textwidth]{./code.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Example of dataset}
+  \includegraphics[width=0.5\textwidth]{./data_example.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Data distribution}
+  \includegraphics[width=0.5\textwidth]{./Data_distribution.png}
+  \end{subfigure}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h!]\ContinuedFloat
+  \centering
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Word cloud of Reddit dataset}
+  \includegraphics[width=0.5\textwidth]{./wordcloud_reddit.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Word cloud of offensive comments}
+  \includegraphics[width=0.5\textwidth]{./wordcloud_offensive.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Word cloud of }
+  \includegraphics[width=0.5\textwidth]{./wordcloud_nonoffensive.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Word cloud of neutral comments}
+  \includegraphics[width=0.5\textwidth]{./wordcloud_neutral.png}
+  \end{subfigure}
 
 \end{figure}
+
+\newpage
+\begin{figure}[h!]\ContinuedFloat
+  \centering
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Lexical diversity}
+  \includegraphics[width=0.5\textwidth]{./lexical_diversity.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Baseline model summary}
+  \includegraphics[width=0.5\textwidth]{./baseline_model.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Model 1 from GA}
+  \includegraphics[width=0.5\textwidth]{./GA_model1.png}
+  \end{subfigure}
+\end{figure}
+
+\newpage
+\begin{figure}[h!]\ContinuedFloat
+  \centering
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Model 2 from GA}
+  \includegraphics[width=0.5\textwidth]{./GA_model2.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Model 3 from GA}
+  \includegraphics[width=0.5\textwidth]{./GA_model3.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Evaluation table}
+  \includegraphics[width=0.5\textwidth]{./comparison_table.png}
+  \end{subfigure}
+
+\end{figure}
+
+\newpage
+\begin{figure}[h!]\ContinuedFloat
+  \centering
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Confusion Matrix of baseline model}
+  \includegraphics[width=0.5\textwidth]{./baseline_model_cm.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Confusion Matrix of model 1 from GA}
+  \includegraphics[width=0.5\textwidth]{./GA_model1_cm.png}
+  \end{subfigure}
+
+\end{figure}
+
+\newpage
+\begin{figure}[h!]\ContinuedFloat
+  \centering
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Confusion Matrix of model 2 from GA}
+  \includegraphics[width=0.5\textwidth]{./GA_model2_cm.png}
+  \end{subfigure}
+
+  \begin{subfigure}[b]{1.0\linewidth}
+  \centering
+  \caption{Confusion Matrix of model 3 from GA}
+  \includegraphics[width=0.5\textwidth]{./GA_model3_cm.png}
+  \end{subfigure}
+
+\end{figure}
+
 \end{document}
