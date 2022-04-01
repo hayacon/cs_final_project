@@ -23,10 +23,6 @@ class TestProject(unittest.TestCase):
             [[1, 291, 0], [3, 189, 0]]
             ]
 
-        # genes = []
-        # for i in range(10):
-        #     num_layers = random.randint(5, 8)
-        #     genes.append(ga_ml.GA_ML.random_model(num_layers))
         #number of ga iterations
         logger = logging.Logger('catch_all')
 

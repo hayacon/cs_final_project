@@ -70,9 +70,7 @@ class ML_simulation:
             train_data[i] = np.array(train_data[i]).astype(np.float32)
             train_data[i] = train_data[i].flatten()
 
-
         self.model.fit(np.stack(train_data, 0), train_target, epochs = 7)
-        # score = self.model.predict(np.stack(test_data, 0)).flatten()
         result = self.model.evaluate(np.stack(test_data, 0), test_target)
 
         print(result)
