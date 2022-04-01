@@ -1,4 +1,4 @@
-This directory contains code for this project.
+This directory contains dataset used in this project.
 
 Note <br />
 additional config.py file require which contains all the following information <br />

@@ -1,1 +1,1 @@
-This is a final project for BSc Computer Science from the University of London.
+This is a final project of University of London BSc Computer Science.
