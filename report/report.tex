@@ -244,7 +244,7 @@ Also, those extra weeks are for cases where thighs did not go as planned.
 Putting some insurance in planning ensures that the project will be completed on time. 
 
 
-\section{Implemementation}
+\section{Implementation}
 Source code is availble on this project's \href{https://github.com/hayacon/cs_final_project}{GitHub repository}
 \subsection{Overviwe}
 The main objective of this project is to develop an offensive language detection deep learning model with the genetic algorithm.
@@ -260,12 +260,19 @@ In addition to those two, the transformer library by Hugging face is used to imp
 \subsection{Dataset}
 Dataset for this project was obtained from Ruddit research paper ~\cite{hada2021ruddit}.
 The dataset is available on the GitHub page of the paper.
+Also, the dataset is created by collecting publicly available comments on the Reddit platform, a popular social media platform.
 However, the dataset only contains the id of each comment.
 Therefore, each comment has to retrieve using Reddit API.
 This process only requires a couple of lines of Python script ((b) on the figures section).
 
 This Python code iterates through each row of the original dataset and converts comment id into actual comment using Reddit API.
 Some comments no longer exist on Reddit, which are removed from the dataset.
+
+\subsection{Ethical concern}
+There are not many ethical concerns with using this dataset.
+The only ethical concern with this dataset is the language that the dataset contains.
+Since this project focuses on detecting offensive language, lots of text within the dataset set contains some offensive language, such as swear words. 
+
 
 \subsection{Data cleaning}
 Data cleaning is a necessary process when dealing with natural language problems.
@@ -350,7 +357,7 @@ It often ended up with invalid models going through genetic algorithms. On the o
 After the first iteration, a set of models with somewhat high performance are fed into the genetic algorithm as an initial population.
 However, there are still a few invalid models.
 Error handling is necessary for the genetic algorithms to work with those invalid models.
-A high-performance model with a mean square error of fewer than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
+A high-performance model with a mean square error of less than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
 
 The result of the genetic algorithm was successful.
 Three models archived higher MSE compared to the baseline model.
@@ -358,6 +365,13 @@ The summary of each model is shown in figures (k), (l), and (m).
 Due to the nature of the genetic algorithm, a single iteration does not necessarily return an ideal result.
 For this project, the second run of the genetic algorithm produced models with better performance than the baseline model.
 
+\subsection{Models}
+There are three models, and these models are three well-performing models produced with the genetic algorithm (details shown in figures (k), (l), and (m)).
+Interestingly, those top three models have common characteristics.
+They all contain bidirectional layers and convolutional layers. The genetic algorithm is not designed to produce a particular type of model.
+Perhaps it is the most effective model that the genetic algorithm could come up with under the condition of this project.
+The effectiveness of the text classification model with a bidirectional layer is proved by a previous study ~\cite{hada2021ruddit}. However, the model of this project contains a convolutional layer, and the model performs similarly to one by a previous study ~\cite{hada2021ruddit}.
+Moreover, since models are generated automatically by the genetic algorithm, architecture seems very unique.
 
 \section{Evalutation}
 Evaluations are carried out by various testing on data.
