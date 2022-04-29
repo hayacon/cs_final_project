@@ -41,7 +41,8 @@
 \begin{document}
 
 \maketitle
-\href{https://github.com/hayacon/cs_final_project}{Link to GitHub repository of this project}
+\href{https://github.com/hayacon/cs_final_project}{Source code for this project is availvlble on the GitHub repository}
+
 
 The dataset of this project may contain comments with offensive or abusive language.
 % \begin{multicols}{2}
@@ -150,9 +151,9 @@ Therefore, the results of those studies are a beneficial source to consider the 
 \subsection{Overview}
 The main objective of this project is to develop an offensive language detection model using Machine Learning and Neural Network knowledge.
 The project also involves some knowledge from Natural Language Processing and Artificial Intelligence. The model aims to detect various offensive languages on online platforms, including social media platforms and other platforms that allow users to leave a comment.
-The project only considers one language, which is English.
+The project only considers English.
 Reasons for this will be explained in a later section.
-This area of research is one of the main focuses in the Natural Language Processing research community, mainly because of increasing online platforms.
+This area of research is one of the main focuses in the Natural Language Processing research community, mainly because of increasing number of online platforms.
 Offensive language detection is the necessary technology to keep online platforms healthy in many ways ~\cite{vidgen2019challenges}. A conventional text detecting model classifies a text into a specific class.
 For instance, particularly to this project’s topic, classes can be ‘hate,’ ‘violence,’ ‘offensive.’ ‘ok,’ etc. The language is often very ambiguous, and it is always a challenge that natural language processing face.
 Of course, this ambiguity applies to offensive language, as well. Categorization is a crucial part of modeling the Machine Learning model.
@@ -162,8 +163,9 @@ There is research ~\cite{malmasi2017detecting} that shows results that demonstra
 To overcome this challenge, a study by a group of researchers from the Alan Turing Institute ~\cite{vidgen2019challenges} proposed a different way of categorizing offensive language.
 Also, the study by Rishav Hada ~\cite{hada2021ruddit} proposes rating each text with a degree of offensiveness which is a pretty different approach compared to the conventional Machine Learning model.
 This project uses a second approach to construct a Machine Learning model.
+
 When constructing a Machine Learning model, tuning parameters can be quite challenging.
-Also, it will require much time and human resources, in this case, myself.
+Also, it will require much time and human resources.
 This project will use a genetic algorithm to automatically tune parameters for building Machine Learning models and construct Neural Networks.
 A genetic algorithm can take a long time to run, but it can run without the presence of a human.
 Also, this will be interesting to see what level of creativity can genetic algorithm provide to construct a deep Machine Learning model.
@@ -245,17 +247,16 @@ Putting some insurance in planning ensures that the project will be completed on
 
 
 \section{Implementation}
-Source code is availble on this project's \href{https://github.com/hayacon/cs_final_project}{GitHub repository}
 \subsection{Overviwe}
-The main objective of this project is to develop an offensive language detection deep learning model with the genetic algorithm.
+The main objective of this project is to develop an offensive language classification model with the genetic algorithm.
 The model aims to classify offensive languages on the scale of -1 (not offensive) and 1 (very offensive).
 In addition, the genetic algorithm will be used to automatically improve the model, which is the main objective of the implementation stage of this project.
 The first implementation cycle is focused on developing a baseline model.
-Then, in further cycles, it focused on developing the genetic algorithm and running it to develop a well-performing machine learning model.
+Then, in further cycles, I focused on developing the genetic algorithm and running it to develop a well-performing machine learning model.
 
 The project is developed with Python and various tools.
 For machine learning and deep learning, I used TensorFlow and Keras.
-In addition to those two, the transformer library by Hugging face is used to import its hateBERT tokenizer.
+In addition to those two, the transformer library by Hugging Face ~\cite{huggingface} is used to import its hateBERT tokenizer.
 
 \subsection{Dataset}
 Dataset for this project was obtained from Ruddit research paper ~\cite{hada2021ruddit}.
@@ -268,13 +269,13 @@ This process only requires a couple of lines of Python script ((b) on the figure
 This Python code iterates through each row of the original dataset and converts comment id into actual comment using Reddit API.
 Some comments no longer exist on Reddit, which are removed from the dataset.
 
-\subsection{Ethical concern}
-There are not many ethical concerns with using this dataset.
-The only ethical concern with this dataset is the language that the dataset contains.
-Since this project focuses on detecting offensive language, lots of text within the dataset set contains some offensive language, such as swear words. 
+% \subsection{Ethical concern}
+There are not many ethical concerns with this dataset.
+The only ethical concern with the dataset is the language it contains.
+Since this project focuses on detecting offensive language, lots of text within the dataset contains some offensive language, such as swear words.
 
 
-\subsection{Data cleaning}
+\subsection{Data cleaning and pre-processi}
 Data cleaning is a necessary process when dealing with natural language problems.
 There is some common approach to text data cleaning, but some adjustment is needed depending on the problem.
 In this project, I used NLTK (Natural Language Toolkit) ~\cite{nltk} and a pre-trained hateBERT tokenizer provided by Huggingface ~\cite{huggingface}.
@@ -294,47 +295,48 @@ It is important to understand various characteristics of the dataset before usin
 Data analysis includes score distribution, frequency distribution, and lexical diversity.
 Figure (c) shows some examples from the dataset.
 
-\subsubsection{Data distribution}
+% \subsubsection{Data distribution}
 In this data set, data are not equally distributed.
 Each comment is classified into 8 different score ranges; each is 0.25.
 Most data sit on a range of between -0.5 and 0.25.
 The result of this analysis found that the data distribution of the dataset is not balanced.
 Therefore, it can be problematic in the machine learning model development process.
-Considering the nature of the data source, it is understandable that lots of comments sit in the neutral range, and fewer comments sit in the offensive range.
+% Considering the nature of the data source, it is understandable that lots of comments sit in the neutral range, and fewer comments sit in the offensive range.
 Figure (d) shows a detailed distribution of data.
 
-\subsubsection{Frequency distribution}
-Frequency distribution analysis are carried over whole dataset, offensive comments (0.5 ~ 1.0), neutral comments (-0.5 ~ 0.5), and non offensive comments (-1.0 ~ -0.5).
-The first finding was that the word “nt” carries a unique meaning within the community of Reddit users.
-This word ranked high in all categories. Figure (e) is the word cloud of the whole dataset.
-In each category, frequent words are aligned with general expectations.
-For instance, offensive comments are likely to contain swear words. The word cloud of offensive comments is shown in figure (f).
-On the other hand, non-offensive comments are likely to contain positive words. Figure (g) is the word cloud for non-offensive comments.
-Figure $ (e) \sim (h)$ displays the frequency distribution of each category in a word cloud.
+% \subsubsection{Frequency distribution}
+Frequency distribution analysis carried over on whole dataset, offensive comments (0.5 ~ 1.0), neutral comments (-0.5 ~ 0.5), and non offensive comments (-1.0 ~ -0.5).
+The first finding was that the word “nt” has a unique meaning within the community of Reddit users.
+This word ranked high in all categories.
+% Refer to the figure (e) for the word cloud of the whole dataset.
+% In each category, frequent words are aligned with general expectations.
+% For instance, offensive comments are likely to contain swear words. The word cloud of offensive comments is shown in figure (f).
+% On the other hand, non-offensive comments are likely to contain positive words. Figure (g) is the word cloud for non-offensive comments.
+Figure $ (e) \sim (h)$ shows the frequency distribution of each category in a word cloud.
 
-\subsubsection{Lexical diversity}
+% \subsubsection{Lexical diversity}
 The result of lexical diversity shows that non-offensive comments have the greatest lexical diversity and offensive comments have the next greatest lexical diversity.
-Overall, the lexical diversity of the whole data set is not too high.
+Overall, the lexical diversity of the whole data set is not so high.
 Figure (i) shows detailed results, including a number of vocabulary.
 
 \subsection{Test}
 The development of this project is mainly based on test-driven development.
 Using the correct data type and structure is very important with machine learning.
 A unit test can ensure that the correct data type and structures are used in each process.
-Also, the unit test points out if there are any errors as development goes on.
+Also, the unit test points out if there are any errors as development goes on, and ensure that evberything work as expected.
 
 \subsection{Baseline model}
 This part of the implementation focused on developing a baseline model.
-This model structure refers to BiLSTM model from Ruddit research paper ~\cite{hada2021ruddit}.
+This model structure is inspired by BiLSTM model from Ruddit research paper ~\cite{hada2021ruddit}.
 As the paper suggests, the model uses HateBERT ~\cite{caselli2020hatebert} tokenizer developed by Hugging Face.
-It also has a model, but it is only available in PyTorch, a different Python library for machine learning.
-This model performance is not very high, but considering this project's main objective, the model provides a good starting point.
-It is the combination of convolutional layer and BiLSTM layers.
+% It also has a model, but it is only available in PyTorch, a different Python library for machine learning.
+% This model performance is not very high, but considering this project's main objective, the model provides a good starting point.
+Baseline model is the combination of convolutional layer and BiLSTM layers.
 Figure (j) is the summary of the baseline model.
 
 \subsection{Genetic algorithm}
 I attempt to develop a machine learning model using a genetic algorithm in this part of the project.
-Hyperplane sampling is one of a genetic algorithm's characteristics, which can help improve a machine learning model over iterations.
+Hyperplane sampling is one of a genetic algorithm's characteristics, which can help improve a machine learning model .
 
 A genetic algorithm consists of two main processes: selection and breeding.
 Keras models are embedded encoded into a list of integers.
@@ -343,34 +345,39 @@ The first integer represents a layer type, and the second integer represents a p
 The third integer only represents another parameter for the convolutional layer.
 For other layers, it is set to 0.
 The selection process consists of converting a genotype into a Keras sequential model then training g process.
-Fitness function is an evaluation process within a Keras.
-Specifically, in this project, it is mean squared error.
-Inbreeding process, two parents are selected by roulette selection.
+% Fitness function is an evaluation process within a Keras.
+% Specifically, in this project, it is mean squared error.
+In this project, mean squared error works as a fitness function.
+In breeding process, two parents are selected by roulette selection.
 Each model gets weight based on its performance.
 Then, two parents are bred to produce a new Keras model.
-Crossover is a breeding method, and there are several mutations, including point mutation, shrink mutation and grow mutation.
+Crossover is the method of breeding, and there are several mutations including point mutation, shrink mutation and grow mutation.
 The breeding process is repeated until there is a certain population.
 
-One of the critical things is that the randomly generated Keras model is not necessarily valid.
-There are lots of invalid models in the first iteration of the genetic algorithm.
-It often ended up with invalid models going through genetic algorithms. On the other hand, several cases of randomly generated models performed well.
-After the first iteration, a set of models with somewhat high performance are fed into the genetic algorithm as an initial population.
+One of the critical thing is that the randomly generated Keras model is not necessarily valid.
+There were lots of invalid models in the first iteration of the genetic algorithm.
+% It often ended up with invalid models going through genetic algorithms.
+On the other hand, several cases of randomly generated models performed well.
+After the first iteration, a set of models with somewhat high performance are fed into the genetic algorithm as part of initial population.
 However, there are still a few invalid models.
 Error handling is necessary for the genetic algorithms to work with those invalid models.
 A high-performance model with a mean square error of less than 0.45 prints out a model summary on a terminal; therefore, it can be reproduced and tested in a different environment.
 
 The result of the genetic algorithm was successful.
-Three models archived higher MSE compared to the baseline model.
-The summary of each model is shown in figures (k), (l), and (m).
+% Three models archived higher MSE compared to the baseline model.
+% The summary of each model is shown in figures (k), (l), and (m).
 Due to the nature of the genetic algorithm, a single iteration does not necessarily return an ideal result.
 For this project, the second run of the genetic algorithm produced models with better performance than the baseline model.
 
 \subsection{Models}
-There are three models, and these models are three well-performing models produced with the genetic algorithm (details shown in figures (k), (l), and (m)).
-Interestingly, those top three models have common characteristics.
+% There are three models, and these models are three well-performing models produced with the genetic algorithm (details shown in figures (k), (l), and (m)).
+As a result of the genetic algorithm, three models archived better MSE compared to the baseline model.
+The summary of each model is shown in figures (k), (l), and (m).
+Interestingly, those models have common characteristics.
 They all contain bidirectional layers and convolutional layers. The genetic algorithm is not designed to produce a particular type of model.
 Perhaps it is the most effective model that the genetic algorithm could come up with under the condition of this project.
-The effectiveness of the text classification model with a bidirectional layer is proved by a previous study ~\cite{hada2021ruddit}. However, the model of this project contains a convolutional layer, and the model performs similarly to one by a previous study ~\cite{hada2021ruddit}.
+The effectiveness of the text classification model with a bidirectional layer is proved by a previous study ~\cite{hada2021ruddit}.
+However, the model of this project contains a convolutional layer.
 Moreover, since models are generated automatically by the genetic algorithm, architecture seems very unique.
 
 \section{Evalutation}
@@ -417,7 +424,7 @@ Detail comparison between models shown in figure (n).
 
 \subsection{Overall evaluation}
 Overall, the project successfully develops a machine learning model using the genetic algorithm.
-However, developed models did not archive high performance as state-of-the-art models would.
+However, developed models did not archive high performance as state-of-the-art models.
 The mean squared error of the baseline model is 0.042, and a model from a genetic algorithm improved to 0.037.
 It seems not much difference but considering that the Ruddit research paper developed a similar model with a mean squared value of 0.035, it is successful.
 By comparing the MSE of the model from Ruddit [1] and this project, the model from Ruddit has better MSE and thus better performance.
@@ -434,14 +441,14 @@ Since then, there have been many genetic algorithm applications, and developing 
 In this project, I attempt to develop a machine learning model to predict the offensiveness of English comments using the genetic algorithm.
 
 First, I worked on data analysis and pre-processing.
-With data analysis, I explored the data and better understood the data.
+With data analysis, I explored the data to have better understsanding of the data.
 It is important to note that the dataset for this project is unbalanced.
-I applied simple tet cleaning methods in data pre-processing and used a pre-train HateBERT vectorizer.
+I applied simple text cleaning methods in data pre-processing and used a pre-train HateBERT vectorizer.
 At this point, I also prepare a training dataset and a testing dataset.
 
 In the next phase, I developed a baseline model to predict the offensive score on Reddit.
 I refer to Ruddit research paper ~\cite{hada2021ruddit} to develop the baseline model.
-Then I attempted to improve that model using a genetic algorithm.
+Then I attempted to develop a better model using a genetic algorithm.
 As a result, the main aim of this project has been successfully achieved, which is to develop a machine learning model using a genetic algorithm.
 Since a genetic algorithm is a probabilistic search procedure, a single algorithm iteration does not necessarily produce the desired result.
 This project runs the algorithm twice to develop a machine learning model with higher performance than the baseline model.
@@ -563,7 +570,7 @@ Also, at the same time, it suggests that a very complex genetic algorithm might 
   \caption{Evaluation table}
   \includegraphics[width=0.5\textwidth]{./comparison_table.png}
   \end{subfigure}
-
+  *BiLSTM with HateBERT is the baseline model
 \end{figure}
 
 \newpage
